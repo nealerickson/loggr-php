@@ -1,0 +1,21 @@
+{
+    "name": "heedworks/loggr-php",
+    "description": "PSR-0 compliant version of the Loggr PHP agent (http://github.com/loggr/loggr-php)",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "authors": [
+        {
+            "name": "Neal Erickson",
+            "email": "neal@heedworks.com"
+        }
+    ],
+    "suggest": {
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Heedworks\\Loggr": "src/"
+        }
+    }
+}
