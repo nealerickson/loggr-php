@@ -11,6 +11,11 @@ class Loggr
 	{
 		$this->Events = new Events($logKey, $apiKey);
 	}
+
+	public function Events()
+	{
+		return $this->Events;
+	}
 	
 	public function trapExceptions()
 	{
