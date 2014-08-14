@@ -4,36 +4,62 @@ namespace Heedworks\Loggr;
 
 use Heedworks\Loggr\DataType;
 
+/**
+ * Class LogClient
+ * @package Heedworks\Loggr
+ */
 class LogClient
 {
+	/**
+	 * The Loggr log key
+	 *
+	 * @var string
+	 */
 	private $_logKey;
+
+	/**
+	 * The Loggr API key
+	 *
+	 * @var string
+	 */
 	private $_apiKey;
 
+	/**
+	 * @param $logKey
+	 * @param $apiKey
+	 */
 	function __construct($logKey, $apiKey)
 	{
 		$this->_logKey = $logKey;
 		$this->_apiKey = $apiKey;
 	}
 
+	/**
+	 * @param $event
+	 */
 	public function Post($event)
 	{
 		// format data
 		$qs = $this->CreateQuerystring($event);
 		$data = "apikey=" . $this->_apiKey . "&" . $qs;
-		
+
 		// write without waiting for a response
-		$fp = fsockopen('post.loggr.net', 80, $errno, $errstr, 30);	
+		$fp = fsockopen('post.loggr.net', 80, $errno, $errstr, 30);
 		$out = "POST /1/logs/".$this->_logKey."/events HTTP/1.1\r\n";
 		$out.= "Host: "."post.loggr.net"."\r\n";
 		$out.= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$out.= "Content-Length: ".strlen($data)."\r\n";
 		$out.= "Connection: Close\r\n\r\n";
 		if (isset($data)) $out.= $data;
-	
+
 		fwrite($fp, $out);
 		fclose($fp);
 	}
-	
+
+	/**
+	 * @param $event
+	 * @return string
+	 */
 	public function CreateQuerystring($event)
 	{
 		$res = "";
@@ -45,7 +71,7 @@ class LogClient
 		if (isset($event->Tags)) $res .= "&tags=" . urlencode($event->Tags);
 		if (isset($event->Latitude) && isset($event->Longitude)) $res .= "&geo=" . urlencode($event->Latitude) . "," . urlencode($event->Longitude);
 		if (isset($event->Ip)) $res .= "&geo=ip:" . urlencode($event->Ip);
-		
+
 		if (isset($event->Data))
 		{
 			if ($event->DataType == DataType::html)
@@ -53,7 +79,7 @@ class LogClient
 			else
 				$res .= "&data=" . urlencode($event->Data);
 		}
-		
+
 		return $res;
 	}
 }
