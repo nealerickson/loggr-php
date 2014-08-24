@@ -48,8 +48,8 @@ class Events
 	public function CreateFromException($exception)
 	{
 		ob_start();
-		var_dump($exception->getTrace(), 5);
-		$stack = str_replace("\t", "----", str_replace("\n", "<br>", ob_get_clean()));
+		//var_dump($exception->getTrace(), 5);
+		//$stack = str_replace("\t", "----", str_replace("\n", "<br>", ob_get_clean()));
 
 		$data = "<b>MESSAGE:</b> " . $exception->getMessage() . "<br>";
 		$data .= "<b>FILE:</b> " . $exception->getFile() . ", " . $exception->getLine() . "<br>";
